@@ -1,9 +1,11 @@
 import pygame
+import sys
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH
 from logger import log_state
 from player import Player
 from asteroid import Asteroid
 from asteroid_field import AsteroidField
+from logger import log_event
 
 def main():
     print(f"Starting Asteroids with pygame version: {pygame.version.ver}")
@@ -36,6 +38,12 @@ def main():
         updatable.update(dt)
         for object in drawable:
             object.draw(screen)
+
+        for object in asteroids:
+            if object.collides_with(player):
+                print("Game Over!")
+                log_event("player_hit")
+                sys.exit()
         
         dt = clock.tick(60) / 1000
         pygame.display.flip()
